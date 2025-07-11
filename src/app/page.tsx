@@ -69,7 +69,6 @@ interface NodePanelData {
 export default function NetworkGraphPage() {
   const svgRef = useRef<SVGSVGElement>(null)
   const [layoutedGraph, setLayoutedGraph] = useState<ElkGraph | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedEdge, setSelectedEdge] = useState<PanelData | null>(null)
   const [selectedNode, setSelectedNode] = useState<Department | null>(null)
@@ -119,7 +118,6 @@ export default function NetworkGraphPage() {
         
       } catch (err) {
         console.error('❌ 处理失败:', err)
-        setError('处理失败: ' + (err as Error).message)
         setLoading(false)
       }
     }
@@ -470,7 +468,7 @@ export default function NetworkGraphPage() {
       }]
     }))
     
-    const elkEdges: ElkEdge[] = Array.from(edgeMap.entries()).map(([key, data], index) => ({
+    const elkEdges: ElkEdge[] = Array.from(edgeMap.entries()).map(([, data], index) => ({
       id: `edge_${index}`,
       sources: [data.from],
       targets: [data.to],
@@ -565,8 +563,6 @@ export default function NetworkGraphPage() {
             pathData += ` L ${section.endPoint.x + padding} ${section.endPoint.y + padding}`
 
             const edgeStyle = getEdgeStyle(edge.id)
-            const isSelected = selectedEdge?.edgeId === edge.id
-            const edgeValue = getEdgeValue(edge.id)
 
             return (
               <g key={edge.id}>
@@ -732,7 +728,7 @@ export default function NetworkGraphPage() {
                       </span>
                     </h3>
                     <div className="space-y-3">
-                      {selectedEdge.variables.map((variable, index) => {
+                      {selectedEdge.variables.map((variable) => {
                         // 格式化数值：固定2位小数，大数字加千位分隔符
                         const formatNumber = (num: number) => {
                           return new Intl.NumberFormat('zh-CN', {
