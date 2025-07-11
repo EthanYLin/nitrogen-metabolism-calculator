@@ -31,8 +31,8 @@ export const DepartmentLabelMap: Record<Department, string> = {
     [Department.Groundwater]: '地下水',
     [Department.Atmosphere]: '大气',
     [Department.Ocean]: '海洋',
-    [Department.OutsideImport]: '外部',
-    [Department.OutsideExport]: '外部',
+    [Department.OutsideImport]: '外部(进口)',
+    [Department.OutsideExport]: '外部(出口)',
 };
 
 // Variable类定义
